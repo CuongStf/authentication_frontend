@@ -16,6 +16,10 @@ npm run build
 
 # build for production and view the bundle analyzer report
 npm run build --report
-```
 
+```
+```
+#Run server node.js in new terminal
+node ./bin/www
+```
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
