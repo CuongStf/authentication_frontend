@@ -2,6 +2,7 @@ const UserModel = require('../model/user.model.js')
 
 const bcrypt = require('bcrypt')
 const checkBody = require('express-validator/check')
+const jwt = require('jsonwebtoken')
 
 module.exports.signup = (req, res, next) => {
   req.checkBody('username', 'username is required').notEmpty()
@@ -36,7 +37,6 @@ module.exports.signup = (req, res, next) => {
                 let newUser = new UserModel(req.body)
                 newUser.save((err, user) => {
                   if (err) {
-                    console.log(err)
                     res.json(err)
                   } else {
                     res.json({
@@ -45,10 +45,11 @@ module.exports.signup = (req, res, next) => {
                   }
                 })
               } catch (err) {
-                console.log(err)
                 res.json(err)
               }
-            } else res.json(err)
+            } else {
+              throw err
+            }
           })
         }
       }
@@ -65,27 +66,29 @@ module.exports.signin = async (req, res, next) => {
   } else {
     UserModel.findOne({
       username: req.body.username
-    }).then(user => {
+    }).then(async user => {
       if (!user) {
-        res.json({
-          message: 'Email is incorrect'
+        res.status(401).json({
+          message: 'Authentication failed. User not exist.'
         })
       } else {
-        bcrypt.compare(req.body.password, user.password, (err, result) => {
-          if (!err) {
-            if (result === true) {
-              res.json({
-                message: 'Login successfully'
-              })
-            } else {
-              res.json({
-                message: 'Username or password is incorrect'
-              })
-            }
-          } else {
-            throw err
-          }
-        })
+        const resultCheck = await user.comparePassword(req.body.password, user.password)
+        if (resultCheck === false) {
+          res.status(401).json({
+            message: 'Authentication failed. Wrong password.'
+          })
+        } else {
+          console.log(process.env.SECRET_KEY)
+          res.status(200).json({
+            token: jwt.sign({
+              data: {
+                username: user.username,
+                id: user._id
+              },
+              exp: Math.floor(Date.now() / 1000) + (60 * 60)
+            }, 'secret')
+          })
+        }
       }
     })
   }
