@@ -1,17 +1,32 @@
 <template>
   <div class="hello">
-    <el-form :model="form" class="style-fullWidth">
+    <el-form
+      :model="form"
+      class="style-fullWidth"
+    >
       <el-form-item label="Tên sách">
-        <el-input v-model="form.name" size="medium"></el-input>
+        <el-input
+          v-model="form.name"
+          size="medium"
+        ></el-input>
       </el-form-item>
       <el-form-item label="Tên tác gỉa">
-        <el-input v-model="form.author" size="medium"></el-input>
+        <el-input
+          v-model="form.author"
+          size="medium"
+        ></el-input>
       </el-form-item>
       <el-form-item label="Năm xuất bản">
-        <el-input v-model="form.year_publish" size="medium"></el-input>
+        <el-input
+          v-model="form.year_publish"
+          size="medium"
+        ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button @click="createBook" size="medium">Create</el-button>
+        <el-button
+          @click="createBook"
+          size="medium"
+        >Create</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -19,7 +34,7 @@
 
 <script>
 import axios from 'axios'
-import {createBook, listBook} from '../api/book.js'
+import { createBook, listBook } from '../api/book.js'
 export default {
   props: ['createBook', 'form'],
   name: 'HelloWorld',
@@ -29,7 +44,7 @@ export default {
     }
   },
   methods: {},
-  mounted() {}
+  mounted () { }
 }
 </script>
 
@@ -41,7 +56,8 @@ export default {
   justify-content: center;
   align-items: center;
 }
-h1, h2 {
+h1,
+h2 {
   font-weight: normal;
 }
 ul {

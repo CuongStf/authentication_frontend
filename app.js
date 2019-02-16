@@ -64,9 +64,12 @@ app.use(session({
   saveUninitialized: true
 }))
 
+// middleware check token except route sign up, sign in
+const verifyToken = require('./server/middleware/verifyToken.middleware')
+// app.use(verifyToken)
+
 // connect db
 var pathDatabase = 'mongodb://127.0.0.1/authentication'
-const uri = 'mongodb+srv://CuongCoder:Manhcuong1998@cluster0-ieqyd.mongodb.net/test?retryWrites=true'
 mongoose.connect(pathDatabase, {
   useNewUrlParser: true,
   useCreateIndex: true
@@ -89,4 +92,41 @@ app.get('/', (req, res, next) => {
   res.send(`randomString: ${randomStr}, sessionId:  ${req.sessionID}`)
 })
 
+const isLoggedIn = require('./server/middleware/isLoggedIn.middleware')
+var passport = require('passport')
+require('./server/config/passport')(passport)
+app.use(passport.initialize())
+app.use(passport.session()) // persistent login sessions
+// =====================================
+// PROFILE SECTION =========================
+// =====================================
+// we will want this protected so you have to be logged in to visit
+// we will use route middleware to verify this (the isLoggedIn function)
+app.get('/profile', isLoggedIn, function (req, res) {
+  res.send(req.user)
+})
+
+// =====================================
+// FACEBOOK ROUTES =====================
+// =====================================
+// route for facebook authentication and login
+app.get('/auth/facebook', passport.authenticate('facebook'))
+
+// handle the callback after facebook has authenticated the user
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', {
+    successRedirect: '/profile',
+    failureRedirect: '/'
+  }))
+
+app.get('/auth/google',
+  passport.authenticate('google', {
+    scope: 'https://www.googleapis.com/auth/plus.profile.emails.read'
+  }))
+
+app.get('/auth/google/callback',
+  passport.authenticate('google', {
+    successRedirect: '/profile',
+    failureRedirect: '/'
+  }))
 module.exports = app

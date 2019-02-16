@@ -78,7 +78,6 @@ module.exports.signin = async (req, res, next) => {
             message: 'Authentication failed. Wrong password.'
           })
         } else {
-          console.log(process.env.SECRET_KEY)
           res.status(200).json({
             token: jwt.sign({
               data: {
@@ -86,7 +85,7 @@ module.exports.signin = async (req, res, next) => {
                 id: user._id
               },
               exp: Math.floor(Date.now() / 1000) + (60 * 60)
-            }, 'secret')
+            }, process.env.SECRET_KEY)
           })
         }
       }

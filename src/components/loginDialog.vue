@@ -36,7 +36,7 @@
   </div>
 </template>
 <script>
-import { signup } from '@/api/user'
+import { signup, loginFb } from '@/api/user'
 export default {
   name: 'loginDialog',
 
@@ -50,7 +50,10 @@ export default {
   },
   methods: {
     signUp () {
-      signup(this.loginInfo).then(res => {
+      // signup(this.loginInfo).then(res => {
+      //   console.log(res)
+      // })
+      loginFb().then(res => {
         console.log(res)
       })
     }
