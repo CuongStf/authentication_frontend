@@ -70,7 +70,8 @@ const verifyToken = require('./server/middleware/verifyToken.middleware')
 
 // connect db
 var pathDatabase = 'mongodb://127.0.0.1/authentication'
-mongoose.connect(pathDatabase, {
+const uri = 'mongodb+srv://CuongCoder:Manhcuong1998@cluster0-ieqyd.mongodb.net/authentication?retryWrites=true'
+mongoose.connect(uri, {
   useNewUrlParser: true,
   useCreateIndex: true
 })
