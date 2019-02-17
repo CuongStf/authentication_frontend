@@ -1,10 +1,12 @@
-# authentication
+# frontend_authentication
 
-> A Vue.js project
+#### written vue.js
+
+> Pet project research Vue.js
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 npm install
 
@@ -18,8 +20,5 @@ npm run build
 npm run build --report
 
 ```
-```
-#Run server node.js in new terminal
-node ./bin/www
-```
+
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
